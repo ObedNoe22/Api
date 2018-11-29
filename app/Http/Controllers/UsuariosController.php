@@ -18,10 +18,11 @@ class UsuariosController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
-            "password" => "required"
+            "password" => "required|min:6"
         ],[
             "nombre.required" => "Falta el campo nombre.",
-            "password.required" => "Falta el campo contraseña."
+            "password.required" => "Falta el campo contraseña.",
+            "password.min" => "La contraseña debe ser de al menos 6 carácteres."
         ]);
         if($validator->fails())
         {
@@ -35,7 +36,7 @@ class UsuariosController extends Controller
         } catch (JWTException $e) {
             return response()->json(["estado" => false,'detalle' => ['Login incorrecto: Error en el server.']]);
         }
-        return response()->json(["estado" => true, "detalle" => $token]);
+        return response()->json(["estado"=> true, "detalle" => $token,'user'=>$request->input('nombre')]);
     }
     public function usuarioAutenticado()
     {
@@ -101,6 +102,7 @@ class UsuariosController extends Controller
         $vendedor->apellidos=$request->input("apellidos");
         $vendedor->save();
         $idvend=$vendedor->id;
+        //Se agrega al vendedor a la tbala usuarios con su vendedor ID
         $usuario = new Usuario();
         $usuario->nombre = $request->input("nombre");
         $usuario->password = Hash::make($request->input("password"));

@@ -25,6 +25,7 @@ class NegociosController extends Controller
 
         $negocio = new Negocio();
         $negocio->nombre = $request->input("nombre");
+        $negocio->vendedorNombre = $request->input("vendedorNombre");
         $negocio->direccion = $request->input("direccion");
         $negocio->longitud = $request->input("longitud");
         $negocio->latitud = $request->input("latitud");
@@ -38,24 +39,6 @@ class NegociosController extends Controller
     {
         Negocio::destroy($id);
         return response()->json("", 200);
-    }
-    //Agregar la disponibilidad y el horario
-    public function disponibilidad_horario(Request $request,$id)
-    {
-        $validator = Validator::make($request->all(), [
-            "horario" => "required",
-            "disponibilidad" => "required"
-        ], [
-            "horario.required" => "Debe llenar el campo de horario del negocio.",
-            "disponibilidad.required" => "Debe llenar el campo de disponibilidad del negocio."
-        ]);
-        if($validator->fails())
-            return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
-        $negocio = Negocio::find($id);
-        $negocio->menu = $request->input("horario");
-        $negocio->cupones_diarios = $request->input("disponibilidad");
-        $negocio->save();
-        return response()->json(["estado" => true, "detalle" => $negocio]);
     }
     //Encontrar los cupones de un negocio
     public function encontrarCupones($id){
@@ -82,6 +65,12 @@ class NegociosController extends Controller
         $negocio=Negocio::find($id);
         return json_encode($negocio);
     }
+    //Todos los negocios
+    public function todos($id){
+        $negocios=Negocio::where('vendedorNombre',$id)->get();
+        return json_encode($negocios);
+    }
+    //Actualizar datos de un negocio
     public function actualizarNegocio(Request $request,$id){
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
@@ -98,6 +87,7 @@ class NegociosController extends Controller
         $negocio->direccion = $request->input("direccion");
         $negocio->longitud = $request->input("longitud");
         $negocio->latitud = $request->input("latitud");
+        $negocio->horario = $request->input("horario");
         $negocio->save();
         return response()->json(["estado" => true, "detalle" => $negocio]);
     }

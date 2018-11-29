@@ -23,8 +23,8 @@ class CuponesController extends Controller
         if($validator->fails())
             return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
         $cupon = new CuponDiario();
-
         $cupon->codigo = $request->input("codigo");
+        $cupon->negocio_id=$request->input('negocio_id');
         $cupon->descripcion = $request->input("descripcion");
         $cupon->caducidad = $request->input("caducidad");
         $cupon->tipo = $request->input("tipo");
@@ -41,7 +41,7 @@ class CuponesController extends Controller
     public function eliminar($id)
     {
         CuponDiario::destroy($id);
-        return response()->json("", 200);
+        return response()->json(["estado"=>true,200]);
     }
     //Actualizar cupon
     public function actualizarCupon(Request $request,$id){

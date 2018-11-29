@@ -18,6 +18,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
      **            Negocios            **
      ************************************/
     Route::get("verNegocio/{id}","NegociosController@verNegocio");//Ver negocio
+    Route::get("todosNegoc/{id}","NegociosController@todos");//Todos los negocios
     Route::post("nuevoNegocio","NegociosController@crear");//Ruta para agregar negocio
     Route::post("actualizarNegocio/{id}","NegociosController@actualizarNegocio");//Ruta para actualizar un negocio
     Route::delete("eliminarNegocio/{id}","NegociosController@eliminar");//Eliminar negocio
@@ -28,7 +29,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     /************************************
      **            Cupones             **
      ************************************/
-    Route::post("cupones/{id}","CuponesController@nuevo");//Agregar cupones diarios
+    Route::post("nuevoCupon/{id}","CuponesController@nuevo");//Agregar cupones diarios
     Route::get("cuponesNegocio/{id}","CuponesController@encontrarNegocio");//Encontrar al negocio de los cupones diarios
     Route::delete("eliminarCupon/{id}","CuponesController@eliminar");//Eliminar cupon diario
     Route::post("actualizarCupon/{id}","CuponesController@actualizarCupon");//Ruta para actualizar un cupon
