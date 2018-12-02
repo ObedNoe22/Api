@@ -10,7 +10,7 @@ class Negocio extends Model
     //Encontrar los productos del negocio
     public function productos()
     {
-        return $this->belongsToMany("App\Producto","menu","negocio_id","producto_id");
+        return $this->hasMany("App\Producto","negocio_id","id");
     }
     //Encontrar los cupones del negocio
     public function cupones(){

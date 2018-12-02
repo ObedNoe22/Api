@@ -51,7 +51,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     /************************************
      **            Prducto             **
      ************************************/
-    Route::post("nuevoProducto","ProductosController@nuevoProducto");//Agregar producto
+    Route::post("nuevoProducto/{id}","ProductosController@nuevoProducto");//Agregar producto
     Route::delete("eliminarProducto/{id}","ProductosController@eliminar");//Eliminar producto
     Route::get("productoNegocio/{id}","ProductosController@encontrarNegocio");//Encontrar al negocio del producto
     Route::get("verProducto/{id}","ProductosController@verProducto");//Ver producto

@@ -10,12 +10,11 @@ use Illuminate\Support\Facades\Validator;
 class ProductosController extends Controller
 {
     //Agregar producto
-    public function nuevoProducto(Request $request){
+    public function nuevoProducto(Request $request,$id){
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
             "costo" => "required",
             "disponible" => "required"
-
         ], [
             "nombre.required" => "Debe llenar el campo de nombre del producto.",
             "costo.required" => "Debe llenar el campo del costo.",
@@ -28,6 +27,7 @@ class ProductosController extends Controller
         $producto->nombre = $request->input("nombre");
         $producto->costo = $request->input("costo");
         $producto->disponible = $request->input("disponible");
+        $producto->negocio_id=$id;
         $producto->save();
         return response()->json(["estado" => true, "detalle" => $producto]);
     }
@@ -35,7 +35,7 @@ class ProductosController extends Controller
     public function eliminar($id)
     {
         Producto::destroy($id);
-        return response()->json("", 200);
+        return response()->json(["estado"=>true,200]);
     }
     //Encontrar al negocio del producto
     public function encontrarNegocio($id){
