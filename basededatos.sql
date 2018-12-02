@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-11-2018 a las 22:18:40
+-- Tiempo de generación: 03-12-2018 a las 00:11:32
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -60,7 +60,7 @@ CREATE TABLE `cupones_diarios` (
 --
 
 INSERT INTO `cupones_diarios` (`id`, `negocio_id`, `tipo`, `codigo`, `descripcion`, `caducidad`, `activo`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Codigo', 'Negocio2', 'Negocio2', 'mañana', 0, '2018-11-15 01:14:33', '2018-11-19 19:44:06');
+(3, 13, 'codigo', 'aaaa', 'PruebaReg', '2018-11-30', 1, '2018-11-25 02:38:58', '2018-11-29 00:22:01');
 
 -- --------------------------------------------------------
 
@@ -93,11 +93,12 @@ INSERT INTO `menu` (`id`, `negocio_id`, `producto_id`, `created_at`, `updated_at
 
 CREATE TABLE `negocios` (
   `id` int(11) NOT NULL,
+  `vendedorNombre` varchar(100) NOT NULL,
   `nombre` varchar(200) NOT NULL,
   `direccion` varchar(200) NOT NULL,
   `longitud` varchar(100) NOT NULL,
   `latitud` varchar(100) NOT NULL,
-  `disponibilidad` int(11) DEFAULT NULL,
+  `disponibilidad` varchar(20) DEFAULT NULL,
   `horario` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
@@ -107,11 +108,8 @@ CREATE TABLE `negocios` (
 -- Volcado de datos para la tabla `negocios`
 --
 
-INSERT INTO `negocios` (`id`, `nombre`, `direccion`, `longitud`, `latitud`, `disponibilidad`, `horario`, `created_at`, `updated_at`) VALUES
-(2, 'Negocio2', 'Negocio2', 'Negocio2', 'Negocio2', 0, '', '2018-11-15 01:05:59', '2018-11-19 19:33:48'),
-(3, 'Negocio3', 'Negocio3', 'Negocio3', 'Negocio3', NULL, NULL, '2018-11-19 19:19:20', '2018-11-19 19:19:20'),
-(4, 'Negocio4', 'Negocio4', 'Negocio4', 'Negocio4', 0, '', '2018-11-19 19:19:58', '2018-11-19 19:19:58'),
-(5, 'Negocio5', 'Negocio5', 'Negocio5', 'Negocio5', 0, '', '2018-11-19 20:30:28', '2018-11-19 20:30:28');
+INSERT INTO `negocios` (`id`, `vendedorNombre`, `nombre`, `direccion`, `longitud`, `latitud`, `disponibilidad`, `horario`, `created_at`, `updated_at`) VALUES
+(13, 'vendedor2', 'bbbbbb', 'bbbbb', '-98.9701005', '19.6794577', '0', '02', '2018-11-22 05:57:26', '2018-11-28 22:54:29');
 
 -- --------------------------------------------------------
 
@@ -124,6 +122,7 @@ CREATE TABLE `productos` (
   `nombre` varchar(200) NOT NULL,
   `costo` double NOT NULL,
   `disponible` int(11) NOT NULL,
+  `negocio_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -132,9 +131,9 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `nombre`, `costo`, `disponible`, `created_at`, `updated_at`) VALUES
-(2, 'Actualizar', 500, 0, '0000-00-00 00:00:00', '2018-11-19 19:57:18'),
-(3, 'No c xd33sad', 2000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `productos` (`id`, `nombre`, `costo`, `disponible`, `negocio_id`, `created_at`, `updated_at`) VALUES
+(3, 'Si c', 3000, 0, 13, '0000-00-00 00:00:00', '2018-11-30 04:06:23'),
+(4, 'Producto', 200, 1, 13, '2018-11-30 03:52:34', '2018-11-30 03:52:34');
 
 -- --------------------------------------------------------
 
@@ -146,6 +145,7 @@ CREATE TABLE `promociones` (
   `id` int(11) NOT NULL,
   `negocio_id` int(11) NOT NULL,
   `descripcion` varchar(200) NOT NULL,
+  `disponible` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -154,11 +154,11 @@ CREATE TABLE `promociones` (
 -- Volcado de datos para la tabla `promociones`
 --
 
-INSERT INTO `promociones` (`id`, `negocio_id`, `descripcion`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Cambio', '0000-00-00 00:00:00', '2018-11-19 19:48:43'),
-(3, 3, 'prueba2', '2018-11-18 04:08:13', '2018-11-18 04:08:13'),
-(4, 4, 'prueba3', '2018-11-18 04:08:30', '2018-11-18 04:08:30'),
-(5, 5, 'prueba4', '2018-11-18 04:08:37', '2018-11-18 04:08:37');
+INSERT INTO `promociones` (`id`, `negocio_id`, `descripcion`, `disponible`, `created_at`, `updated_at`) VALUES
+(2, 2, 'Cambio', 0, '0000-00-00 00:00:00', '2018-11-19 19:48:43'),
+(3, 3, 'prueba2', 0, '2018-11-18 04:08:13', '2018-11-18 04:08:13'),
+(4, 4, 'prueba3', 0, '2018-11-18 04:08:30', '2018-11-18 04:08:30'),
+(6, 13, 'Prueba55', 0, '2018-11-29 00:07:47', '2018-11-29 00:21:26');
 
 -- --------------------------------------------------------
 
@@ -183,9 +183,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `password`, `vendedorId`, `rolId`, `estado`, `created_at`, `updated_at`, `remember_token`) VALUES
-(1, 'prueba', '$2y$10$W1VH1Zk8OL4aVZL0tnBfkeUycWgtKhmRuyvCeMRg.o5dBETKjzfFO', NULL, 0, '', '2018-11-14 22:11:51', '2018-11-14 22:11:51', NULL),
-(2, 'prueba2', '$2y$10$WPm4cz9FbpvUJ6xbu47FHOSmutcskVm8WU3EqNEVzA3vKJSpr/RCe', NULL, 0, '', '2018-11-14 22:15:56', '2018-11-14 22:15:56', NULL),
-(3, 'vendedor2', '$2y$10$3I.PB41b8EJtEWDX0f6G5.ZDve.x8TYf8bTmXV.SWOj6Jdqw.sYGq', 4, NULL, 'Inactivo', '2018-11-19 20:38:30', '2018-11-19 20:38:30', NULL);
+(12, 'vendedor1', '$2y$10$o4V0OwhwdA6zCnWk1hJHy.RTYTbj1UWIrUM4iWBVt2eVWwlmIBK8m', 13, NULL, 'Inactivo', '2018-11-20 06:16:49', '2018-11-20 06:16:49', NULL),
+(13, 'vendedor2', '$2y$10$FBwM644UVMsBoCJ.qtQtVuZT/88.io1rrHGsbzWgacJkpPKvtxLle', 14, NULL, 'Inactivo', '2018-11-20 06:17:34', '2018-11-20 06:17:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -206,10 +205,8 @@ CREATE TABLE `vendedor` (
 --
 
 INSERT INTO `vendedor` (`id`, `nombre`, `apellidos`, `created_at`, `updated_at`) VALUES
-(1, 'vendedor1', 'vendedor1', '2018-11-19 20:35:24', '2018-11-19 20:35:24'),
-(2, 'vendedor3', 'vendedor3', '2018-11-19 20:36:57', '2018-11-19 20:36:57'),
-(3, 'vendedor4', 'vendedor4', '2018-11-19 20:37:56', '2018-11-19 20:37:56'),
-(4, 'vendedor5', 'vendedor5', '2018-11-19 20:38:30', '2018-11-19 20:38:30');
+(13, 'vendedor1', 'vendedor1', '2018-11-20 06:16:48', '2018-11-20 06:16:48'),
+(14, 'Obed', 'Martinez', '2018-11-20 06:17:34', '2018-11-20 06:17:34');
 
 --
 -- Índices para tablas volcadas
@@ -278,7 +275,7 @@ ALTER TABLE `cupones_anuales`
 -- AUTO_INCREMENT de la tabla `cupones_diarios`
 --
 ALTER TABLE `cupones_diarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `menu`
@@ -290,31 +287,31 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de la tabla `negocios`
 --
 ALTER TABLE `negocios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `promociones`
 --
 ALTER TABLE `promociones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `vendedor`
 --
 ALTER TABLE `vendedor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
