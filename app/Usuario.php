@@ -9,6 +9,9 @@ class Usuario extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     protected $table = "usuarios";
+    public function usuariosNegocio(){
+        return $this->hasMany("App\Usuario","NegocioId","id");
+    }
 
     protected $fillable = [
         'nombre', 'password',

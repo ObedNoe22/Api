@@ -56,6 +56,14 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::get("productoNegocio/{id}","ProductosController@encontrarNegocio");//Encontrar al negocio del producto
     Route::get("verProducto/{id}","ProductosController@verProducto");//Ver producto
     Route::post("actualizarProducto/{id}","ProductosController@actualizarProducto");//Actualizar producto
+    /************************************
+     **        Roles/Usuarios          **
+     ************************************/
+    Route::post("nuevoUsuarioNegocio/{id}","RolesController@nuevoUsuario");//Crear usuario de un negocio
+    Route::post("nuevoRol/{id}","RolesController@nuevoRol");//Crear usuario de un negocio
+    Route::post("asignarRol/{id}","RolesController@asignarRol");//Asinar un rol
+    Route::get("encontrarUsuarios/{id}","RolesController@encontrarUsuarios");//Encontrar usuarios de un negocio
+    Route::get("encontrarRoles/{id}","RolesController@encontrarRoles");//Encontrar roles de un negocio
 });
 
 Route::get("/",function(Request $request){

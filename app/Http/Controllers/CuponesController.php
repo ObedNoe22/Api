@@ -11,13 +11,11 @@ class CuponesController extends Controller
     public function nuevo(Request $request,$id){
         $validator = Validator::make($request->all(), [
             "codigo" => "required",
-            "descripcion" => "required",
-            "caducidad" => "required"
+            "descripcion" => "required"
 
         ], [
             "nombre.required" => "Debe llenar el campo de nombre del negocio.",
-            "direccion.required" => "Debe llenar el campo de direccion.",
-            "caducidad.required" => "Debe llenar el campo de caducidad."
+            "direccion.required" => "Debe llenar el campo de direccion."
         ]);
 
         if($validator->fails())
@@ -27,6 +25,7 @@ class CuponesController extends Controller
         $cupon->negocio_id=$request->input('negocio_id');
         $cupon->descripcion = $request->input("descripcion");
         $cupon->caducidad = $request->input("caducidad");
+        $cupon->usos = $request->input("usos");
         $cupon->tipo = $request->input("tipo");
         $cupon->activo = $request->input("activo");
         $cupon->save();
@@ -48,12 +47,9 @@ class CuponesController extends Controller
         $validator = Validator::make($request->all(), [
             "codigo" => "required",
             "descripcion" => "required",
-            "caducidad" => "required"
-
         ], [
             "codigo.required" => "Debe llenar el campo del codigo.",
-            "descripcion.required" => "Debe llenar el campo de descripcion del codigo.",
-            "caducidad.required" => "Debe llenar el campo de caducidad."
+            "descripcion.required" => "Debe llenar el campo de descripcion del codigo."
         ]);
         if($validator->fails())
             return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
@@ -62,6 +58,7 @@ class CuponesController extends Controller
         $cupon->codigo = $request->input("codigo");
         $cupon->descripcion = $request->input("descripcion");
         $cupon->caducidad = $request->input("caducidad");
+        $cupon->usos = $request->input("usos");
         $cupon->activo = $request->input("activo");
         $cupon->save();
         return response()->json(["estado" => true, "detalle" => $cupon]);
