@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-01-2019 a las 05:33:15
+-- Tiempo de generación: 08-01-2019 a las 06:13:49
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -197,7 +197,7 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `negocioId` int(11) DEFAULT NULL,
-  `rolId` int(11) DEFAULT NULL,
+  `rolId` int(11) DEFAULT NULL COMMENT '0 Es para compradores,1 vendedores',
   `estado` varchar(30) NOT NULL,
   `correo` varchar(30) NOT NULL,
   `created_at` datetime NOT NULL,
@@ -210,8 +210,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `password`, `negocioId`, `rolId`, `estado`, `correo`, `created_at`, `updated_at`, `remember_token`) VALUES
-(12, 'vendedor1', '$2y$10$o4V0OwhwdA6zCnWk1hJHy.RTYTbj1UWIrUM4iWBVt2eVWwlmIBK8m', 13, NULL, 'Inactivo', '', '2018-11-20 06:16:49', '2018-11-20 06:16:49', NULL),
-(13, 'vendedor2', '$2y$10$FBwM644UVMsBoCJ.qtQtVuZT/88.io1rrHGsbzWgacJkpPKvtxLle', 14, NULL, 'Inactivo', '', '2018-11-20 06:17:34', '2018-11-20 06:17:34', NULL),
+(12, 'vendedor1', '$2y$10$o4V0OwhwdA6zCnWk1hJHy.RTYTbj1UWIrUM4iWBVt2eVWwlmIBK8m', 13, 2, 'Inactivo', '', '2018-11-20 06:16:49', '2018-11-20 06:16:49', NULL),
+(13, 'vendedor2', '$2y$10$FBwM644UVMsBoCJ.qtQtVuZT/88.io1rrHGsbzWgacJkpPKvtxLle', 14, 1, 'Inactivo', '', '2018-11-20 06:17:34', '2018-11-20 06:17:34', NULL),
 (14, 'xdxdxd', '$2y$10$e97URrfhG0c1l.dh8AHChO9L2/UockfKw9AV5DrLogMYYSlxe0f.S', 17, 2, 'activo', '', '2018-12-12 23:48:49', '2018-12-12 23:52:30', NULL),
 (15, 'Prueba', '$2y$10$K75HJLwZnKUAVDRVxX5xnOawjpDw/fiecBjhg5ZmH6HbajNiY4fM2', 14, NULL, 'Inactivo', '', '2019-01-01 21:41:40', '2019-01-01 21:41:40', NULL),
 (16, 'Prueba22', '$2y$10$5ATyD09j562xbpS0Gzy0QOAPQEqt/KbIBe2RUXIpN2Dn/ef3w9QPG', 14, NULL, 'Inactivo', '', '2019-01-01 22:15:37', '2019-01-01 22:15:37', NULL),

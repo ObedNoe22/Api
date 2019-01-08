@@ -36,8 +36,9 @@ class UsuariosController extends Controller
         }
         $usuario = Usuario::where('nombre', $request->input('nombre'))->first();
         $idUsu = $usuario->id;
+        $rolId = $usuario->rolId;
         $nombre = Vendedor::where('id', $idUsu)->first();
-        return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'), 'vendedor' => $nombre]);
+        return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'), 'vendedor' => $nombre, 'rol' => $rolId]);
 
     }
 
