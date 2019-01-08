@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-12-2018 a las 00:11:32
+-- Tiempo de generación: 08-01-2019 a las 05:33:15
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -49,7 +49,8 @@ CREATE TABLE `cupones_diarios` (
   `tipo` varchar(10) NOT NULL COMMENT 'Tipo codigo,Tipo por fecha y Tipo por uso',
   `codigo` varchar(200) NOT NULL,
   `descripcion` varchar(200) NOT NULL,
-  `caducidad` varchar(80) NOT NULL,
+  `caducidad` date DEFAULT NULL,
+  `usos` int(11) DEFAULT NULL,
   `activo` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
@@ -59,8 +60,9 @@ CREATE TABLE `cupones_diarios` (
 -- Volcado de datos para la tabla `cupones_diarios`
 --
 
-INSERT INTO `cupones_diarios` (`id`, `negocio_id`, `tipo`, `codigo`, `descripcion`, `caducidad`, `activo`, `created_at`, `updated_at`) VALUES
-(3, 13, 'codigo', 'aaaa', 'PruebaReg', '2018-11-30', 1, '2018-11-25 02:38:58', '2018-11-29 00:22:01');
+INSERT INTO `cupones_diarios` (`id`, `negocio_id`, `tipo`, `codigo`, `descripcion`, `caducidad`, `usos`, `activo`, `created_at`, `updated_at`) VALUES
+(4, 13, 'codigo', 'xdddd', '4562', '2018-12-13', 0, 1, '2018-12-12 23:06:58', '2018-12-12 23:06:58'),
+(5, 13, 'codigo', 'aaaaaa', 'prueba', NULL, NULL, 1, '2019-01-05 06:45:03', '2019-01-05 06:48:14');
 
 -- --------------------------------------------------------
 
@@ -96,6 +98,7 @@ CREATE TABLE `negocios` (
   `vendedorNombre` varchar(100) NOT NULL,
   `nombre` varchar(200) NOT NULL,
   `direccion` varchar(200) NOT NULL,
+  `correo` varchar(30) NOT NULL,
   `longitud` varchar(100) NOT NULL,
   `latitud` varchar(100) NOT NULL,
   `disponibilidad` varchar(20) DEFAULT NULL,
@@ -108,8 +111,8 @@ CREATE TABLE `negocios` (
 -- Volcado de datos para la tabla `negocios`
 --
 
-INSERT INTO `negocios` (`id`, `vendedorNombre`, `nombre`, `direccion`, `longitud`, `latitud`, `disponibilidad`, `horario`, `created_at`, `updated_at`) VALUES
-(13, 'vendedor2', 'bbbbbb', 'bbbbb', '-98.9701005', '19.6794577', '0', '02', '2018-11-22 05:57:26', '2018-11-28 22:54:29');
+INSERT INTO `negocios` (`id`, `vendedorNombre`, `nombre`, `direccion`, `correo`, `longitud`, `latitud`, `disponibilidad`, `horario`, `created_at`, `updated_at`) VALUES
+(13, 'vendedor2', 'bbbbbb', 'Tecamac', 'correonegocio1@gmail.com', '-98.96830729999999', '19.7122732', '1', '02', '2018-11-22 05:57:26', '2019-01-08 03:19:49');
 
 -- --------------------------------------------------------
 
@@ -132,8 +135,9 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `costo`, `disponible`, `negocio_id`, `created_at`, `updated_at`) VALUES
-(3, 'Si c', 3000, 0, 13, '0000-00-00 00:00:00', '2018-11-30 04:06:23'),
-(4, 'Producto', 200, 1, 13, '2018-11-30 03:52:34', '2018-11-30 03:52:34');
+(3, 'Si cxdxd', 3000, 0, 13, '0000-00-00 00:00:00', '2018-12-12 04:23:29'),
+(4, 'Productoaadsdsa', 4000, 1, 13, '2018-11-30 03:52:34', '2019-01-05 20:44:46'),
+(5, 'aaaa', 200, 1, 13, '2018-12-12 20:55:30', '2018-12-12 20:55:30');
 
 -- --------------------------------------------------------
 
@@ -158,7 +162,29 @@ INSERT INTO `promociones` (`id`, `negocio_id`, `descripcion`, `disponible`, `cre
 (2, 2, 'Cambio', 0, '0000-00-00 00:00:00', '2018-11-19 19:48:43'),
 (3, 3, 'prueba2', 0, '2018-11-18 04:08:13', '2018-11-18 04:08:13'),
 (4, 4, 'prueba3', 0, '2018-11-18 04:08:30', '2018-11-18 04:08:30'),
-(6, 13, 'Prueba55', 0, '2018-11-29 00:07:47', '2018-11-29 00:21:26');
+(6, 13, 'Prueba55j', 0, '2018-11-29 00:07:47', '2018-12-12 04:23:49');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `vendedorId` int(11) NOT NULL,
+  `rol` varchar(40) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `vendedorId`, `rol`, `created_at`, `updated_at`) VALUES
+(1, 13, 'Prueba', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 13, 'Prueba', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -170,9 +196,10 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `vendedorId` int(11) DEFAULT NULL,
+  `negocioId` int(11) DEFAULT NULL,
   `rolId` int(11) DEFAULT NULL,
   `estado` varchar(30) NOT NULL,
+  `correo` varchar(30) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `remember_token` varchar(255) DEFAULT NULL
@@ -182,9 +209,13 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `password`, `vendedorId`, `rolId`, `estado`, `created_at`, `updated_at`, `remember_token`) VALUES
-(12, 'vendedor1', '$2y$10$o4V0OwhwdA6zCnWk1hJHy.RTYTbj1UWIrUM4iWBVt2eVWwlmIBK8m', 13, NULL, 'Inactivo', '2018-11-20 06:16:49', '2018-11-20 06:16:49', NULL),
-(13, 'vendedor2', '$2y$10$FBwM644UVMsBoCJ.qtQtVuZT/88.io1rrHGsbzWgacJkpPKvtxLle', 14, NULL, 'Inactivo', '2018-11-20 06:17:34', '2018-11-20 06:17:34', NULL);
+INSERT INTO `usuarios` (`id`, `nombre`, `password`, `negocioId`, `rolId`, `estado`, `correo`, `created_at`, `updated_at`, `remember_token`) VALUES
+(12, 'vendedor1', '$2y$10$o4V0OwhwdA6zCnWk1hJHy.RTYTbj1UWIrUM4iWBVt2eVWwlmIBK8m', 13, NULL, 'Inactivo', '', '2018-11-20 06:16:49', '2018-11-20 06:16:49', NULL),
+(13, 'vendedor2', '$2y$10$FBwM644UVMsBoCJ.qtQtVuZT/88.io1rrHGsbzWgacJkpPKvtxLle', 14, NULL, 'Inactivo', '', '2018-11-20 06:17:34', '2018-11-20 06:17:34', NULL),
+(14, 'xdxdxd', '$2y$10$e97URrfhG0c1l.dh8AHChO9L2/UockfKw9AV5DrLogMYYSlxe0f.S', 17, 2, 'activo', '', '2018-12-12 23:48:49', '2018-12-12 23:52:30', NULL),
+(15, 'Prueba', '$2y$10$K75HJLwZnKUAVDRVxX5xnOawjpDw/fiecBjhg5ZmH6HbajNiY4fM2', 14, NULL, 'Inactivo', '', '2019-01-01 21:41:40', '2019-01-01 21:41:40', NULL),
+(16, 'Prueba22', '$2y$10$5ATyD09j562xbpS0Gzy0QOAPQEqt/KbIBe2RUXIpN2Dn/ef3w9QPG', 14, NULL, 'Inactivo', '', '2019-01-01 22:15:37', '2019-01-01 22:15:37', NULL),
+(17, 'Prueba222', '$2y$10$3xAQ2EY6RMMOkV38gl4Lp.O/zBfy.w/bSGj4BSEp68/0ZI6oxViAS', 15, 1, 'Inactivo', '', '2019-01-01 22:17:06', '2019-01-01 22:17:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -205,8 +236,9 @@ CREATE TABLE `vendedor` (
 --
 
 INSERT INTO `vendedor` (`id`, `nombre`, `apellidos`, `created_at`, `updated_at`) VALUES
-(13, 'vendedor1', 'vendedor1', '2018-11-20 06:16:48', '2018-11-20 06:16:48'),
-(14, 'Obed', 'Martinez', '2018-11-20 06:17:34', '2018-11-20 06:17:34');
+(13, 'Obed Noe', 'Martinez', '2018-11-20 06:16:48', '2018-11-20 06:16:48'),
+(14, 'Obed', 'Martinez', '2018-11-20 06:17:34', '2018-11-20 06:17:34'),
+(15, 'xdxdxd', 'apellidos', '2019-01-01 22:17:05', '2019-01-01 22:17:05');
 
 --
 -- Índices para tablas volcadas
@@ -249,6 +281,12 @@ ALTER TABLE `promociones`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -275,7 +313,7 @@ ALTER TABLE `cupones_anuales`
 -- AUTO_INCREMENT de la tabla `cupones_diarios`
 --
 ALTER TABLE `cupones_diarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `menu`
@@ -293,7 +331,7 @@ ALTER TABLE `negocios`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `promociones`
@@ -302,16 +340,16 @@ ALTER TABLE `promociones`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT de la tabla `vendedor`
---
-ALTER TABLE `vendedor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
