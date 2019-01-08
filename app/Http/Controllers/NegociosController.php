@@ -29,6 +29,7 @@ class NegociosController extends Controller
         $negocio->direccion = $request->input("direccion");
         $negocio->longitud = $request->input("longitud");
         $negocio->latitud = $request->input("latitud");
+        $negocio->correo = $request->input("correo");
         $negocio->disponibilidad = "0";
         $negocio->horario = "";
         $negocio->save();
@@ -88,6 +89,8 @@ class NegociosController extends Controller
         $negocio->longitud = $request->input("longitud");
         $negocio->latitud = $request->input("latitud");
         $negocio->horario = $request->input("horario");
+        $negocio->disponibilidad = $request->input("disponibilidad");
+        $negocio->correo = $request->input("correo");
         $negocio->save();
         return response()->json(["estado" => true, "detalle" => $negocio]);
     }

@@ -64,4 +64,8 @@ class RolesController extends Controller
     public function nuevoRol($id){
 
     }
+    public function eliminarUsuario($id){
+        Usuario::destroy($id);
+        return response()->json(["estado"=>true,200]);
+    }
 }
