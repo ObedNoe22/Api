@@ -47,10 +47,12 @@ class UsuariosController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
+            "correo" => "required",
             "password" => "required|min:6",
             "rpassword" => "required|same:password"
         ], [
             "nombre.required" => "Por favor llenar el campo de nombre.",
+            "correo.required" => "Debe llenar el campo de correo.",
             "password.required" => "Debe llenar el campo del password.",
             "password.min" => "La contraseña debe ser de al menos 6 carácteres.",
             "rpassword.same" => "La contraseña y su confirmación deben ser iguales."
@@ -61,7 +63,8 @@ class UsuariosController extends Controller
         $usuario = new Usuario();
         $usuario->nombre = $request->input("nombre");
         $usuario->password = Hash::make($request->input("password"));
-        $usuario->estado = "Inactivo";
+        $usuario->estado = "0";
+        $usuario->correo=$request->input("correo");
         $usuario->save();
         $token = JWTAuth::fromUser($usuario);
         return response()->json(compact('usuario', 'token'), 201);
@@ -97,12 +100,12 @@ class UsuariosController extends Controller
         $usuario->save();
         $idvend = $usuario->id;
         $token = JWTAuth::fromUser($usuario);
-        return response()->json(compact('usuario', 'token'), 201);
-        //Se agrega al vendedor a la tbala vendedores con su vendedor ID
+        //Se agrega al vendedor a la tabla vendedores con su vendedor ID
         $vendedor = new Vendedor();
         $vendedor->id = $idvend;
         $vendedor->nombre = $request->input("nombrec");
         $vendedor->apellidos = $request->input("apellidos");
         $vendedor->save();
+        return response()->json(compact('usuario', 'token'), 201);
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 class NegociosController extends Controller
 {
     //Agregar nuevo negocio,solo datos necesarios
-    public function crear(Request $request)
+    public function crear(Request $request,$id)
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
@@ -25,7 +25,7 @@ class NegociosController extends Controller
 
         $negocio = new Negocio();
         $negocio->nombre = $request->input("nombre");
-        $negocio->vendedorNombre = $request->input("vendedorNombre");
+        $negocio->vendedorId = $id;
         $negocio->direccion = $request->input("direccion");
         $negocio->longitud = $request->input("longitud");
         $negocio->latitud = $request->input("latitud");
@@ -68,7 +68,7 @@ class NegociosController extends Controller
     }
     //Todos los negocios
     public function todos($id){
-        $negocios=Negocio::where('vendedorNombre',$id)->get();
+        $negocios=Negocio::where('vendedorId',$id)->get();
         return json_encode($negocios);
     }
     //Actualizar datos de un negocio

@@ -19,7 +19,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
      ************************************/
     Route::get("verNegocio/{id}","NegociosController@verNegocio");//Ver negocio
     Route::get("todosNegoc/{id}","NegociosController@todos");//Todos los negocios
-    Route::post("nuevoNegocio","NegociosController@crear");//Ruta para agregar negocio
+    Route::post("nuevoNegocio/{id}","NegociosController@crear");//Ruta para agregar negocio
     Route::post("actualizarNegocio/{id}","NegociosController@actualizarNegocio");//Ruta para actualizar un negocio
     Route::delete("eliminarNegocio/{id}","NegociosController@eliminar");//Eliminar negocio
     Route::get("negocioCupones/{id}","NegociosController@encontrarCupones");//Encontrar los cupones de un negocio
@@ -61,9 +61,11 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
      ************************************/
     Route::post("nuevoUsuarioNegocio/{id}","RolesController@nuevoUsuario");//Crear usuario de un negocio
     Route::post("nuevoRol/{id}","RolesController@nuevoRol");//Crear usuario de un negocio
-    Route::post("asignarRol/{id}","RolesController@asignarRol");//Asinar un rol
+    Route::post("editar/{id}","RolesController@editar");//Asinar un rol
     Route::get("encontrarUsuarios/{id}","RolesController@encontrarUsuarios");//Encontrar usuarios de un negocio
+    Route::get("verUsuario/{id}","RolesController@verUsuario");//Ver el rol del usuario
     Route::get("encontrarRoles/{id}","RolesController@encontrarRoles");//Encontrar roles de un negocio
+    Route::delete("eliminarUsuario/{id}","RolesController@eliminarUsuario");//Eliminar usuario de un negocio
 });
 
 Route::get("/",function(Request $request){
