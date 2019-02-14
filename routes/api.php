@@ -14,6 +14,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
      **            Usuarios            **
      ************************************/
     Route::get("me","UsuariosController@usuarioAutenticado");//Usuarios autenticados
+    Route::get("verUsuario/{id}","UsuariosController@verUsuario");//Usuarios autenticados
     /************************************
      **            Negocios            **
      ************************************/
@@ -63,7 +64,6 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::post("nuevoRol/{id}","RolesController@nuevoRol");//Crear usuario de un negocio
     Route::post("editar/{id}","RolesController@editar");//Asinar un rol
     Route::get("encontrarUsuarios/{id}","RolesController@encontrarUsuarios");//Encontrar usuarios de un negocio
-    Route::get("verUsuario/{id}","RolesController@verUsuario");//Ver el rol del usuario
     Route::get("encontrarRoles/{id}","RolesController@encontrarRoles");//Encontrar roles de un negocio
     Route::delete("eliminarUsuario/{id}","RolesController@eliminarUsuario");//Eliminar usuario de un negocio
 });

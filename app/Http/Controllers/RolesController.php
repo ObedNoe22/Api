@@ -82,9 +82,4 @@ class RolesController extends Controller
         return response()->json(["estado" => true, 200]);
     }
 
-    public function verUsuario($id)
-    {
-        $usuario=Usuario::find($id);
-        return json_encode($usuario);
-    }
 }

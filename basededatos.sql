@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-01-2019 a las 06:13:49
+-- Tiempo de generación: 14-02-2019 a las 01:57:27
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -95,7 +95,7 @@ INSERT INTO `menu` (`id`, `negocio_id`, `producto_id`, `created_at`, `updated_at
 
 CREATE TABLE `negocios` (
   `id` int(11) NOT NULL,
-  `vendedorNombre` varchar(100) NOT NULL,
+  `vendedorId` tinyint(4) NOT NULL,
   `nombre` varchar(200) NOT NULL,
   `direccion` varchar(200) NOT NULL,
   `correo` varchar(30) NOT NULL,
@@ -111,8 +111,9 @@ CREATE TABLE `negocios` (
 -- Volcado de datos para la tabla `negocios`
 --
 
-INSERT INTO `negocios` (`id`, `vendedorNombre`, `nombre`, `direccion`, `correo`, `longitud`, `latitud`, `disponibilidad`, `horario`, `created_at`, `updated_at`) VALUES
-(13, 'vendedor2', 'bbbbbb', 'Tecamac', 'correonegocio1@gmail.com', '-98.96830729999999', '19.7122732', '1', '02', '2018-11-22 05:57:26', '2019-01-08 03:19:49');
+INSERT INTO `negocios` (`id`, `vendedorId`, `nombre`, `direccion`, `correo`, `longitud`, `latitud`, `disponibilidad`, `horario`, `created_at`, `updated_at`) VALUES
+(13, 13, 'bbbbbb', 'Tecamac', 'correonegocio1@gmail.com', '-98.96830729999999', '19.7122732', '1', '02', '2018-11-22 05:57:26', '2019-01-08 03:19:49'),
+(14, 13, 'PruebaUsuarios', 'Tecamac', 'pruebausu@gmail.com', '-98.9751502', '19.7732223', '0', '', '2019-01-09 22:17:29', '2019-01-09 22:17:29');
 
 -- --------------------------------------------------------
 
@@ -198,8 +199,9 @@ CREATE TABLE `usuarios` (
   `password` varchar(255) NOT NULL,
   `negocioId` int(11) DEFAULT NULL,
   `rolId` int(11) DEFAULT NULL COMMENT '0 Es para compradores,1 vendedores',
-  `estado` varchar(30) NOT NULL,
+  `estado` tinyint(4) NOT NULL COMMENT '0 Inactivo,1 Activo',
   `correo` varchar(30) NOT NULL,
+  `imagenPerfil` varchar(200) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `remember_token` varchar(255) DEFAULT NULL
@@ -209,13 +211,18 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `password`, `negocioId`, `rolId`, `estado`, `correo`, `created_at`, `updated_at`, `remember_token`) VALUES
-(12, 'vendedor1', '$2y$10$o4V0OwhwdA6zCnWk1hJHy.RTYTbj1UWIrUM4iWBVt2eVWwlmIBK8m', 13, 2, 'Inactivo', '', '2018-11-20 06:16:49', '2018-11-20 06:16:49', NULL),
-(13, 'vendedor2', '$2y$10$FBwM644UVMsBoCJ.qtQtVuZT/88.io1rrHGsbzWgacJkpPKvtxLle', 14, 1, 'Inactivo', '', '2018-11-20 06:17:34', '2018-11-20 06:17:34', NULL),
-(14, 'xdxdxd', '$2y$10$e97URrfhG0c1l.dh8AHChO9L2/UockfKw9AV5DrLogMYYSlxe0f.S', 17, 2, 'activo', '', '2018-12-12 23:48:49', '2018-12-12 23:52:30', NULL),
-(15, 'Prueba', '$2y$10$K75HJLwZnKUAVDRVxX5xnOawjpDw/fiecBjhg5ZmH6HbajNiY4fM2', 14, NULL, 'Inactivo', '', '2019-01-01 21:41:40', '2019-01-01 21:41:40', NULL),
-(16, 'Prueba22', '$2y$10$5ATyD09j562xbpS0Gzy0QOAPQEqt/KbIBe2RUXIpN2Dn/ef3w9QPG', 14, NULL, 'Inactivo', '', '2019-01-01 22:15:37', '2019-01-01 22:15:37', NULL),
-(17, 'Prueba222', '$2y$10$3xAQ2EY6RMMOkV38gl4Lp.O/zBfy.w/bSGj4BSEp68/0ZI6oxViAS', 15, 1, 'Inactivo', '', '2019-01-01 22:17:06', '2019-01-01 22:17:06', NULL);
+INSERT INTO `usuarios` (`id`, `nombre`, `password`, `negocioId`, `rolId`, `estado`, `correo`, `imagenPerfil`, `created_at`, `updated_at`, `remember_token`) VALUES
+(12, 'vendedor1', '$2y$10$o4V0OwhwdA6zCnWk1hJHy.RTYTbj1UWIrUM4iWBVt2eVWwlmIBK8m', 13, 2, 0, '', '', '2018-11-20 06:16:49', '2018-11-20 06:16:49', NULL),
+(13, 'vendedor2', '$2y$10$FBwM644UVMsBoCJ.qtQtVuZT/88.io1rrHGsbzWgacJkpPKvtxLle', 14, 1, 1, 'usuario1@hotmail.com', 'vUN9UU6FbErdVARPIImYnM4T8SSWaeQlLB7lyKCl.jpeg', '2018-11-20 06:17:34', '2019-01-10 00:32:32', NULL),
+(14, 'xdxdxd', '$2y$10$e97URrfhG0c1l.dh8AHChO9L2/UockfKw9AV5DrLogMYYSlxe0f.S', 17, 2, 0, '', '', '2018-12-12 23:48:49', '2018-12-12 23:52:30', NULL),
+(15, 'Prueba22', '$2y$10$K75HJLwZnKUAVDRVxX5xnOawjpDw/fiecBjhg5ZmH6HbajNiY4fM2', 14, 2, 1, 'usuarioprueba@gmail.com', '', '2019-01-01 21:41:40', '2019-01-09 23:48:27', NULL),
+(17, 'Prueba222', '$2y$10$3xAQ2EY6RMMOkV38gl4Lp.O/zBfy.w/bSGj4BSEp68/0ZI6oxViAS', 15, 1, 0, '', '', '2019-01-01 22:17:06', '2019-01-01 22:17:06', NULL),
+(34, 'pruebd', '$2y$10$THh81c86rpYvW84apr5zXeHuaVWpDibPLH48lC7rDkv7eJBYGI4oG', NULL, NULL, 0, 'prueba@gmail.com', '0Ies9oLCiSfRNBzez57e3MbByKbFgtlUhvc4cmUB.jpeg', '2019-01-15 00:05:22', '2019-01-15 00:05:22', NULL),
+(35, 'pruebds', '$2y$10$k6Vk18u.mmCS/ynB4h8tA.OG50Ahr5jMzFneaLsDCFC1xRx2tWGuW', NULL, NULL, 0, 'prueba@gmail.com', 'vUN9UU6FbErdVARPIImYnM4T8SSWaeQlLB7lyKCl.jpeg', '2019-01-15 00:06:39', '2019-01-15 00:06:39', NULL),
+(36, 'pruebdsnnnd', '$2y$10$0OVrTbnSfxANXwJ20a5meOSGA13NS3HbacKs0rb/A04ZDrnh1/ciK', NULL, NULL, 0, 'prueba@gmail.com', '1', '2019-01-15 00:42:48', '2019-01-15 00:42:48', NULL),
+(38, 'pruebdsnnndd', '$2y$10$rg555FlI/TCJbiDYtV1LXeR7EBDnaL.MS9fbw/S7piHLyVO9U2OW6', NULL, NULL, 0, 'prueba@gmail.com', '1', '2019-01-15 00:44:34', '2019-01-15 00:44:34', NULL),
+(39, 'pruebdsnnndf', '$2y$10$oyp6hAhy7qxv5Ck6kj1TXeE1pS9kwV1R87K5C/3hZ1Zst5YFlAA5u', NULL, NULL, 0, 'prueba@gmail.com', 'WHBeG7SpSSjt0GE0vcZwobyVyej1n7funcxZsMky.jpeg', '2019-01-15 00:45:33', '2019-01-15 00:45:33', NULL),
+(40, 'pruebdsnnnff', '$2y$10$wJQGDZtXsXF3QtG9jf/rS.fjvz88jxK5cj28yg94npORbo4U1zc3q', NULL, NULL, 0, 'prueba@gmail.com', 'ciekCjkmqkJYOYoKPsHmb9zKSgxqnvx3cmt36lGi.jpeg', '2019-01-16 15:12:55', '2019-01-16 15:12:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -236,9 +243,7 @@ CREATE TABLE `vendedor` (
 --
 
 INSERT INTO `vendedor` (`id`, `nombre`, `apellidos`, `created_at`, `updated_at`) VALUES
-(13, 'Obed Noe', 'Martinez', '2018-11-20 06:16:48', '2018-11-20 06:16:48'),
-(14, 'Obed', 'Martinez', '2018-11-20 06:17:34', '2018-11-20 06:17:34'),
-(15, 'xdxdxd', 'apellidos', '2019-01-01 22:17:05', '2019-01-01 22:17:05');
+(13, 'Obed Noe', 'Martinez', '2018-11-20 06:16:48', '2018-11-20 06:16:48');
 
 --
 -- Índices para tablas volcadas
@@ -325,7 +330,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de la tabla `negocios`
 --
 ALTER TABLE `negocios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -349,7 +354,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

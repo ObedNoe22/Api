@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Usuario;
 use App\Vendedor;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -65,11 +67,13 @@ class UsuariosController extends Controller
         $usuario->password = Hash::make($request->input("password"));
         $usuario->estado = "0";
         $usuario->correo=$request->input("correo");
+        $imagen= $request->file("imagen");
+        $ruta=Storage::disk('public')->put('',$imagen);
+        $usuario->imagenPerfil=$ruta;
         $usuario->save();
         $token = JWTAuth::fromUser($usuario);
         return response()->json(compact('usuario', 'token'), 201);
     }
-
     //Agregar vendedor
     public function nuevoVendedor(Request $request)
     {
@@ -94,11 +98,13 @@ class UsuariosController extends Controller
         $usuario->nombre = $request->input("nombre");
         $usuario->password = Hash::make($request->input("password"));
         $usuario->correo = $request->input("correo");
-        $usuario->negocioId = "";
-        $usuario->estado = "Inactivo";
+        $usuario->estado = "0";
         $usuario->rolId = "1";
-        $usuario->save();
         $idvend = $usuario->id;
+        $imagen= $request->file("imagen");
+        $ruta=Storage::disk('public')->put('',$imagen);
+        $usuario->imagenPerfil=$ruta;
+        $usuario->save();
         $token = JWTAuth::fromUser($usuario);
         //Se agrega al vendedor a la tabla vendedores con su vendedor ID
         $vendedor = new Vendedor();
@@ -107,5 +113,10 @@ class UsuariosController extends Controller
         $vendedor->apellidos = $request->input("apellidos");
         $vendedor->save();
         return response()->json(compact('usuario', 'token'), 201);
+    }
+    //VerUsuario
+    public function verUsuario($id){
+        $usuario=Usuario::find($id);
+        return json_encode($usuario);
     }
 }
