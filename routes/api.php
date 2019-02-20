@@ -15,6 +15,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
      ************************************/
     Route::get("me","UsuariosController@usuarioAutenticado");//Usuarios autenticados
     Route::get("verUsuario/{id}","UsuariosController@verUsuario");//Usuarios autenticados
+    Route::post("editarUsuario/{id}","UsuariosController@edtarUsuario");//Editar
     /************************************
      **            Negocios            **
      ************************************/
@@ -50,7 +51,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::post("actualizarPromo/{id}","PromocionesController@actualizarPromocion");//Actualizar promocion
     Route::get("verPromo/{id}","PromocionesController@verPromo");//Ver promocion
     /************************************
-     **            Prducto             **
+     **            Producto            **
      ************************************/
     Route::post("nuevoProducto/{id}","ProductosController@nuevoProducto");//Agregar producto
     Route::delete("eliminarProducto/{id}","ProductosController@eliminar");//Eliminar producto
@@ -68,6 +69,3 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::delete("eliminarUsuario/{id}","RolesController@eliminarUsuario");//Eliminar usuario de un negocio
 });
 
-Route::get("/",function(Request $request){
-    echo "api";
-});
