@@ -37,9 +37,8 @@ class UsuariosController extends Controller
             return response()->json(["estado" => false, 'detalle' => ['Login incorrecto: Error en el server.']]);
         }
         $usuario = Usuario::where('nombre', $request->input('nombre'))->first();
-        $idUsu = $usuario->id;
         $rolId = $usuario->rolId;
-        $nombre = Vendedor::where('id', $idUsu)->first();
+        $nombre = Vendedor::where('usuarioId', $usuario->id)->first();
         return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'), 'vendedor' => $nombre, 'rol' => $rolId]);
 
     }
@@ -67,12 +66,16 @@ class UsuariosController extends Controller
         $usuario->password = Hash::make($request->input("password"));
         $usuario->estado = "0";
         $usuario->correo = $request->input("correo");
-        $imagen = $request->file("imagen");
-        $ruta = Storage::disk('public_uploads')->put('', $imagen);
-        $usuario->imagenPerfil = $ruta;
+        // Todo: Analizar si vale la pena pedir la imagen en este punto
+//        if($request->file("imagen") != "")
+//        {
+//            $imagen = $request->file("imagen");
+//            $ruta = Storage::disk('public_uploads')->put('usuarios/perfiles', $imagen);
+//            $usuario->imagenPerfil = $ruta;
+//        }
         $usuario->save();
         $token = JWTAuth::fromUser($usuario);
-        return response()->json(compact('usuario', 'token'), 201);
+        return response()->json(["estado" => true, "detalle" => ["usuario" => $usuario, $token => $token]]);
     }
 
     //Agregar vendedor
@@ -80,13 +83,15 @@ class UsuariosController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
-            "password" => "required",
+            "password" => "required|min:6",
             "correo" => "required",
             "rpassword" => "required|same:password"
         ], [
             "nombre.required" => "Por favor llenar el campo de nombre.",
             "correo.required" => "Por favor indicar un correo electronico",
-            "password.required" => "Debe llenar el campo del password.",
+            "password.required" => "Debe llenar el campo de contraseña.",
+            "rpassword.required" => "Debe llenar el campo de confirmación.",
+            "password.min" => "La contraseña debe ser de al menos 6 carácteres.",
             "rpassword.same" => "La contraseña y su confirmación deben ser iguales."
         ]);
         if ($validator->fails())
@@ -97,19 +102,22 @@ class UsuariosController extends Controller
         $usuario->correo = $request->input("correo");
         $usuario->estado = "0";
         $usuario->rolId = "1";
-        $idvend = $usuario->id;
-        $imagen = $request->file("imagen");
-        $ruta = Storage::disk('public')->put('', $imagen);
-        $usuario->imagenPerfil = $ruta;
+        // Todo: Analizar si vale la pena pedir la imagen en este punto
+//        if($request->file("imagen") != "")
+//        {
+//            $imagen = $request->file("imagen");
+//            $ruta = Storage::disk('public')->put('vendedores/perfiles', $imagen);
+//            $usuario->imagenPerfil = $ruta;
+//        }
         $usuario->save();
         $token = JWTAuth::fromUser($usuario);
         //Se agrega al vendedor a la tabla vendedores con su vendedor ID
         $vendedor = new Vendedor();
-        $vendedor->id = $idvend;
+        $vendedor->usuarioId = $usuario->id;
         $vendedor->nombre = $request->input("nombrec");
         $vendedor->apellidos = $request->input("apellidos");
         $vendedor->save();
-        return response()->json(compact('usuario', 'token'), 201);
+        return response()->json(["estado" => true, "detalle" => ["usuario" => $usuario, $token => $token]]);
     }
 
     //VerUsuario
