@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -38,7 +39,8 @@ class UsuariosController extends Controller
         }
         $usuario = Usuario::where('nombre', $request->input('nombre'))->first();
         $rolId = $usuario->rolId;
-        $nombre = Vendedor::where('usuarioId', $usuario->id)->first();
+        $vendedor = Vendedor::where('usuarioId', $usuario->id)->first();
+        $nombre=$vendedor->nombre." ".$vendedor->apellidos;
         return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'), 'vendedor' => $nombre, 'rol' => $rolId]);
 
     }
@@ -56,8 +58,7 @@ class UsuariosController extends Controller
             "correo.required" => "Debe llenar el campo de correo.",
             "password.required" => "Debe llenar el campo del password.",
             "password.min" => "La contraseña debe ser de al menos 6 carácteres.",
-            "rpassword.same" => "La contraseña y su confirmación deben ser iguales.",
-            "rpassword.required" => "La confirmacion de contraseña es requerida."
+            "rpassword.same" => "La contraseña y su confirmación deben ser iguales."
         ]);
 
         if ($validator->fails())
@@ -67,14 +68,6 @@ class UsuariosController extends Controller
         $usuario->password = Hash::make($request->input("password"));
         $usuario->estado = "0";
         $usuario->correo = $request->input("correo");
-<<<<<<< HEAD
-        $imagenNueva = $request->file('imagen');
-        $extension = $imagenNueva->getClientOriginalExtension();
-        $imagenRezize = Image::make($imagenNueva->getRealPath());
-        $imagenRezize->resize(150, 150);
-        $imagenRezize->save(public_path("storage/" . "aaaa" . "." . $extension));
-        $usuario->imagenPerfil = "aa" . "." . $extension;
-=======
         // Todo: Analizar si vale la pena pedir la imagen en este punto
 //        if($request->file("imagen") != "")
 //        {
@@ -82,7 +75,6 @@ class UsuariosController extends Controller
 //            $ruta = Storage::disk('public_uploads')->put('usuarios/perfiles', $imagen);
 //            $usuario->imagenPerfil = $ruta;
 //        }
->>>>>>> 4e9a8c00bc4d6939c98594638f91f02e2791c17f
         $usuario->save();
         $token = JWTAuth::fromUser($usuario);
         return response()->json(["estado" => true, "detalle" => ["usuario" => $usuario, $token => $token]]);
@@ -93,30 +85,16 @@ class UsuariosController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
-<<<<<<< HEAD
-            "nombrec" => "required",
-            "apellidos" => "required",
-            "password" => "required",
-=======
             "password" => "required|min:6",
->>>>>>> 4e9a8c00bc4d6939c98594638f91f02e2791c17f
             "correo" => "required",
             "rpassword" => "required|same:password"
         ], [
-            "nombre.required" => "Por favor llenar el campo de nombre de usuario.",
-            "nombrec.required" => "Por favor llenar el campo de nombre.",
-            "apellidos.required" => "Por favor llenar el campo de apellidos.",
+            "nombre.required" => "Por favor llenar el campo de nombre.",
             "correo.required" => "Por favor indicar un correo electronico",
-<<<<<<< HEAD
-            "password.required" => "Debe llenar el campo del password.",
-            "rpassword.same" => "La contraseña y su confirmación deben ser iguales.",
-            "rpassword.required" => "La confirmacion de contraseña es requerida."
-=======
             "password.required" => "Debe llenar el campo de contraseña.",
             "rpassword.required" => "Debe llenar el campo de confirmación.",
             "password.min" => "La contraseña debe ser de al menos 6 carácteres.",
             "rpassword.same" => "La contraseña y su confirmación deben ser iguales."
->>>>>>> 4e9a8c00bc4d6939c98594638f91f02e2791c17f
         ]);
         if ($validator->fails())
             return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
@@ -126,19 +104,7 @@ class UsuariosController extends Controller
         $usuario->correo = $request->input("correo");
         $usuario->estado = "0";
         $usuario->rolId = "1";
-<<<<<<< HEAD
-        $usuario->imagenPerfil=".jpeg";
-        $usuario->save();
-        //Guarda el usuario
-        //Se crea la imagen de perfil con el id
-        $idvend=$usuario->id;
-        $usuario=Usuario::find($idvend);
-        $imagenNueva = $request->input('imagen');
-        $imagenRezize = Image::make($imagenNueva);
-        $imagenRezize->resize(150, 150);
-        $imagenRezize->save(public_path("storage/" . $idvend . ".jpeg"));
-        $usuario->imagenPerfil=$idvend.".jpeg";
-=======
+        $usuario->imagenPerfil = "";
         // Todo: Analizar si vale la pena pedir la imagen en este punto
 //        if($request->file("imagen") != "")
 //        {
@@ -146,7 +112,6 @@ class UsuariosController extends Controller
 //            $ruta = Storage::disk('public')->put('vendedores/perfiles', $imagen);
 //            $usuario->imagenPerfil = $ruta;
 //        }
->>>>>>> 4e9a8c00bc4d6939c98594638f91f02e2791c17f
         $usuario->save();
         $token = JWTAuth::fromUser($usuario);
         //Se agrega al vendedor a la tabla vendedores con su vendedor ID
@@ -154,13 +119,14 @@ class UsuariosController extends Controller
         $vendedor->usuarioId = $usuario->id;
         $vendedor->nombre = $request->input("nombrec");
         $vendedor->apellidos = $request->input("apellidos");
-        $vendedor->save();
-<<<<<<< HEAD
-        $estado=true;
-        return response()->json(compact('usuario', 'token',"estado"), 201);
-=======
-        return response()->json(["estado" => true, "detalle" => ["usuario" => $usuario, $token => $token]]);
->>>>>>> 4e9a8c00bc4d6939c98594638f91f02e2791c17f
+        try {
+            $vendedor->save();
+            return response()->json(["estado" => true, "detalle" => ["usuario" => $usuario, $token => $token]]);
+        } catch (Exception $e) {
+            return json_encode(["estado"=>false,"detalle"=>"Usuario duplicado"]);
+        }
+
+
     }
 
     //VerUsuario
@@ -170,7 +136,7 @@ class UsuariosController extends Controller
         return json_encode($usuario);
     }
 
-    public function editarUsuario($id, Request $request)
+    public function edtarUsuario($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
@@ -189,21 +155,23 @@ class UsuariosController extends Controller
             $imagenVieja = $usuario->imagenPerfil;
             if (Storage::disk('public_uploads')->exists($imagenVieja) == null) {
                 Storage::disk('public_uploads')->delete($imagenVieja);
-                $imagenNueva = $request->input('imagenPerfil');
-                $imagenRezize = Image::make($imagenNueva);
+                $imagenNueva = $request->file('imagen');
+                $extension = $imagenNueva->getClientOriginalExtension();
+                $imagenRezize = Image::make($imagenNueva->getRealPath());
                 $imagenRezize->resize(150, 150);
-                $imagenRezize->save(public_path("storage/" . $id . ".jpeg"));
-                $usuario->imagenPerfil=$id.".jpeg";
-                $usuario->nombre=$request->input('nombre');
+                $imagenRezize->save(public_path("storage/" . $id . "." . $extension));
+                $usuario->imagenPerfil = $id . "." . $extension;
+                $usuario->nombre = $request->input('nombre');
                 $usuario->save();
                 return json_encode(["estado" => true]);
             }
-            $imagenNueva = $request->input('imagenPerfil');
-            $imagenRezize = Image::make($imagenNueva);
+            $imagenNueva = $request->file('imagen');
+            $extension = $imagenNueva->getClientOriginalExtension();
+            $imagenRezize = Image::make($imagenNueva->getRealPath());
             $imagenRezize->resize(150, 150);
-            $imagenRezize->save(public_path("storage/" . $id . ".jpeg"));
-            $usuario->imagenPerfil=$id.".jpeg";
-            $usuario->nombre=$request->input('nombre');
+            $imagenRezize->save(public_path("storage/" . $id . "." . $extension));
+            $usuario->imagenPerfil = $id . "." . $extension;
+            $usuario->nombre = $request->input('nombre');
             $usuario->save();
             return json_encode(["estado" => true]);
         }
