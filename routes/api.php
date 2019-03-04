@@ -15,7 +15,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
      ************************************/
     Route::get("me","UsuariosController@usuarioAutenticado");//Usuarios autenticados
     Route::get("verUsuario/{id}","UsuariosController@verUsuario");//Usuarios autenticados
-    Route::post("editarUsuario/{id}","UsuariosController@edtarUsuario");//Editar
+    Route::post("editarUsuario/{id}","UsuariosController@editarUsuario");//Editar
     /************************************
      **            Negocios            **
      ************************************/
