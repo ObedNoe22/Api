@@ -39,11 +39,15 @@ class UsuariosController extends Controller
         }
         $usuario = Usuario::where('nombre', $request->input('nombre'))->first();
         $rolId = $usuario->rolId;
-        $vendedor = Vendedor::where('usuarioId', $usuario->id)->first();
-        $nombre=$vendedor->nombre." ".$vendedor->apellidos;
-        $id=$vendedor->usuarioId;
-        return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'),'id'=>$id, 'vendedor' => $nombre, 'rol' => $rolId]);
-
+        if($rolId==1){
+            $vendedor = Vendedor::where('usuarioId', $usuario->id)->first();
+            $nombre=$vendedor->nombre." ".$vendedor->apellidos;
+            $id=$vendedor->usuarioId;
+            return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'),'id'=>$id, 'vendedor' => $nombre, 'rol' => $rolId]);
+        }
+        else{
+            return response()->json(["estado" => true, "detalle" => $token, 'rol' => $rolId,"estadoC"=>$usuario->estado,"id"=>$usuario->id]);
+        }
     }
 
     //Agregar usuario
@@ -68,7 +72,9 @@ class UsuariosController extends Controller
         $usuario->nombre = $request->input("nombre");
         $usuario->password = Hash::make($request->input("password"));
         $usuario->estado = "0";
+        $usuario->rolId = "0";
         $usuario->correo = $request->input("correo");
+        $usuario->imagenPerfil="";
         // Todo: Analizar si vale la pena pedir la imagen en este punto
 //        if($request->file("imagen") != "")
 //        {
@@ -78,7 +84,7 @@ class UsuariosController extends Controller
 //        }
         $usuario->save();
         $token = JWTAuth::fromUser($usuario);
-        return response()->json(["estado" => true, "detalle" => ["usuario" => $usuario, $token => $token]]);
+        return response()->json(["estado" => true, "detalle" => ["usuario" => $usuario, "token" => $token]]);
     }
 
     //Agregar vendedor
