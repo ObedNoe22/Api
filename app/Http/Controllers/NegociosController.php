@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Negocio;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 
 class NegociosController extends Controller
 {
     //Agregar nuevo negocio,solo datos necesarios
-    public function crear(Request $request,$id)
+    public function crear(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
@@ -20,7 +21,7 @@ class NegociosController extends Controller
             "direccion.required" => "Debe llenar el campo de direccion."
         ]);
 
-        if($validator->fails())
+        if ($validator->fails())
             return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
 
         $negocio = new Negocio();
@@ -35,44 +36,60 @@ class NegociosController extends Controller
         $negocio->save();
         return response()->json(["estado" => true, "detalle" => $negocio]);
     }
+
     //Eliminar negocio
     public function eliminar($id)
     {
         Negocio::destroy($id);
         return response()->json("", 200);
     }
+
     //Encontrar los cupones de un negocio
-    public function encontrarCupones($id){
-        $negocios=Negocio::find($id);
+    public function encontrarCupones($id)
+    {
+        $negocios = Negocio::find($id);
         return json_encode($negocios->cupones);
     }
+
     //Encontrar los menus de un negocio
-    public function encontrarMenu($id){
-        $negocios=Negocio::find($id);
-        return json_encode($negocios->menu);
+    public function encontrarMenu($id)
+    {
+        $negocios = Negocio::find($id);
+        return json_encode(["estado"=>true,"menu"=>$negocios->menu]);
     }
+
     //Encontrar las promociones de un negocio
-    public function encontrarPromociones($id){
-        $negocios=Negocio::find($id);
-        return json_encode($negocios->promocioness);
+    public function encontrarPromociones($id)
+    {
+        $negocios = Negocio::find($id);
+        $promos=$negocios->promociones;
+        return json_encode(["estado" => true, "negocio" => $negocios->nombre, "promociones" => $promos]);
     }
+
     //Encontrar los productos de un negocio
-    public function encontrarProductos($id){
-        $negocios=Negocio::find($id);
+    public function encontrarProductos($id)
+    {
+        $negocios = Negocio::find($id);
         return json_encode($negocios->productos);
     }
+
     //Ver negocio
-    public function verNegocio($id){
-        $negocio=Negocio::find($id);
+    public function verNegocio($id)
+    {
+        $negocio = Negocio::find($id);
         return json_encode($negocio);
     }
+
     //Todos los negocios
-    public function todos($id){
-        $negocios=Negocio::where('vendedorId',$id)->get();
+    public function todos($id)
+    {
+        $negocios = Negocio::where('vendedorId', $id)->get();
         return json_encode($negocios);
     }
+
     //Actualizar datos de un negocio
-    public function actualizarNegocio(Request $request,$id){
+    public function actualizarNegocio(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
             "direccion" => "required"
@@ -81,9 +98,9 @@ class NegociosController extends Controller
             "nombre.required" => "Debe llenar el campo de nombre del negocio.",
             "direccion.required" => "Debe llenar el campo de direccion."
         ]);
-        if($validator->fails())
+        if ($validator->fails())
             return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
-        $negocio=Negocio::find($id);
+        $negocio = Negocio::find($id);
         $negocio->nombre = $request->input("nombre");
         $negocio->direccion = $request->input("direccion");
         $negocio->longitud = $request->input("longitud");

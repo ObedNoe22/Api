@@ -69,4 +69,14 @@ class PromocionesController extends Controller
         $promo = Promociones::find($id);
         return json_encode($promo);
     }
+    public function globales(){
+        $promocionesT=[];
+        $promociones=Promociones::where('disponible',1)->get();
+        foreach ($promociones as $promocion){
+            $negocio= $promocion->negocios;
+            $promocionn=["promocion"=>$promocion,"negocio"=>$negocio];
+            array_push($promocionesT,$promocionn);
+        }
+        return json_encode($promocionesT);
+    }
 }

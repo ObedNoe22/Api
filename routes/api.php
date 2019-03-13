@@ -50,6 +50,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::get("promosNegocio/{id}","PromocionesController@encontrarNegocio");//Encontrar al negocio de la promo
     Route::post("actualizarPromo/{id}","PromocionesController@actualizarPromocion");//Actualizar promocion
     Route::get("verPromo/{id}","PromocionesController@verPromo");//Ver promocion
+    Route::get("promosGlobales","PromocionesController@globales");//Promociones globales
     /************************************
      **            Producto            **
      ************************************/

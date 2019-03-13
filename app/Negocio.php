@@ -18,10 +18,10 @@ class Negocio extends Model
     }
     //Encontrar los menu del negocio
     public function menu(){
-        return $this->hasMany("App\Menu","negocio_id","id");
+        return $this->belongsToMany("App\Producto","menu","negocio_id","id");
     }
     //Encontrar las promociones del negocio
-    public function promocioness(){
+    public function promociones(){
         return $this->hasMany("App\Promociones","negocio_id","id");
     }
 
