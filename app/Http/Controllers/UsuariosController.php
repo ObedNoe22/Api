@@ -143,7 +143,7 @@ class UsuariosController extends Controller
         return json_encode($usuario);
     }
 
-    public function edtarUsuario($id, Request $request)
+    public function editarUsuario($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
             "nombre" => "required",
