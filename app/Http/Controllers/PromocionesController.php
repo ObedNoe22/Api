@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Promociones;
+use Carbon\Carbon;
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -75,7 +77,12 @@ class PromocionesController extends Controller
         foreach ($promociones as $promocion){
             $negocio= $promocion->negocios;
             $promocionn=["promocion"=>$promocion,"negocio"=>$negocio];
-            array_push($promocionesT,$promocionn);
+            $now=Carbon::now()->format('Y-m-d');
+            $created=Carbon::make($promocion->created_at)->format('Y-m-d');
+            $update=Carbon::make($promocion->updated_at)->format('Y-m-d');
+            if($update==$now||$created==$now){
+                array_push($promocionesT,$promocionn);
+            }
         }
         return json_encode($promocionesT);
     }
