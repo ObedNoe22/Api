@@ -28,6 +28,9 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::get("negocioMenu/{id}","NegociosController@encontrarMenu");//Encontrar los menus de un negocio
     Route::get("negocioPromos/{id}","NegociosController@encontrarPromociones");//Encontrar las promociones de un negocio
     Route::get("negocioProductos/{id}","NegociosController@encontrarProductos");//Encontrar los productos de un negocio
+    Route::post("nuevoComentarioN/{id}","ComentariosController@nuevoN");
+    Route::get("comentariosN/{id}","ComentariosController@resumenN");
+    Route::post("editarComentarioN/{id}","ComentariosController@editarN");
     /************************************
      **            Cupones             **
      ************************************/
