@@ -26,10 +26,19 @@ class ProductosController extends Controller
         $producto = new Producto();
         $producto->nombre = $request->input("nombre");
         $producto->costo = $request->input("costo");
-        $producto->disponible = $request->input("disponible");
         $producto->negocio_id=$id;
         $producto->save();
         return response()->json(["estado" => true, "detalle" => $producto]);
+    }
+    public function cambiarE($id){
+        $producto=Producto::find($id);
+        if($producto->disponible==1){
+            $producto->disponible=0;
+        }else{
+            $producto->disponible=1;
+        }
+        $producto->save();
+        return response()->json(["estado"=>true]);
     }
     //Eliminar producto
     public function eliminar($id)

@@ -31,6 +31,8 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::post("nuevoComentarioN/{id}","ComentariosController@nuevoN");
     Route::get("comentariosN/{id}","ComentariosController@resumenN");
     Route::post("editarComentarioN/{id}","ComentariosController@editarN");
+    Route::get("negociosGlobales","NegociosController@globales");
+    Route::get("cambiarestNeg/{id}","NegociosController@cambiarEstNeg");
     /************************************
      **            Cupones             **
      ************************************/
@@ -54,6 +56,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::post("actualizarPromo/{id}","PromocionesController@actualizarPromocion");//Actualizar promocion
     Route::get("verPromo/{id}","PromocionesController@verPromo");//Ver promocion
     Route::get("promosGlobales","PromocionesController@globales");//Promociones globales
+    Route::get("cambiarEstadoPromo/{id}","PromocionesController@cambiarE");
     /************************************
      **            Producto            **
      ************************************/
@@ -62,6 +65,7 @@ Route::group(["middleware" => "jwt"],function(){ //Grupo de rutas cuando el toke
     Route::get("productoNegocio/{id}","ProductosController@encontrarNegocio");//Encontrar al negocio del producto
     Route::get("verProducto/{id}","ProductosController@verProducto");//Ver producto
     Route::post("actualizarProducto/{id}","ProductosController@actualizarProducto");//Actualizar producto
+    Route::get("cambiarEstadoProd/{id}","ProductosController@cambiarE");
     /************************************
      **        Roles/Usuarios          **
      ************************************/

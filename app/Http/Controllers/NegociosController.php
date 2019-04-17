@@ -106,9 +106,22 @@ class NegociosController extends Controller
         $negocio->longitud = $request->input("longitud");
         $negocio->latitud = $request->input("latitud");
         $negocio->horario = $request->input("horario");
-        $negocio->disponibilidad = $request->input("disponibilidad");
         $negocio->correo = $request->input("correo");
         $negocio->save();
         return response()->json(["estado" => true, "detalle" => $negocio]);
+    }
+    public function cambiarEstNeg($id){
+        $negocio=Negocio::find($id);
+        if($negocio->disponibilidad==1){
+            $negocio->disponibilidad=0;
+        }else{
+            $negocio->disponibilidad=1;
+        }
+        $negocio->save();
+        return response()->json(["estado"=>true]);
+    }
+    public function globales(){
+        $negocios=Negocio::all();
+        return json_encode(["estado"=>true,"negocios"=>$negocios]);
     }
 }

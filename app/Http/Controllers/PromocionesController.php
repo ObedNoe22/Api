@@ -36,7 +36,7 @@ class PromocionesController extends Controller
     public function eliminar($id)
     {
         Promociones::destroy($id);
-        return response()->json(["estado"=>true,200]);
+        return response()->json(["estado" => true, 200]);
     }
 
     //Encontrar al negocio de la promocion
@@ -60,9 +60,20 @@ class PromocionesController extends Controller
             return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
         $promocion = Promociones::find($id);
         $promocion->descripcion = $request->input("descripcion");
-        $promocion->disponible = $request->input("disponible");
         $promocion->save();
         return response()->json(["estado" => true, "detalle" => $promocion]);
+    }
+
+    public function cambiarE($id)
+    {
+        $promo = Promociones::find($id);
+        if ($promo->disponible == 1) {
+            $promo->disponible = 0;
+        } else {
+            $promo->disponible = 1;
+        }
+        $promo->save();
+        return response()->json(["estado" => true]);
     }
 
     //Ver promocion
@@ -71,17 +82,19 @@ class PromocionesController extends Controller
         $promo = Promociones::find($id);
         return json_encode($promo);
     }
-    public function globales(){
-        $promocionesT=[];
-        $promociones=Promociones::where('disponible',1)->get();
-        foreach ($promociones as $promocion){
-            $negocio= $promocion->negocios;
-            $promocionn=["promocion"=>$promocion,"negocio"=>$negocio];
-            $now=Carbon::now()->format('Y-m-d');
-            $created=Carbon::make($promocion->created_at)->format('Y-m-d');
-            $update=Carbon::make($promocion->updated_at)->format('Y-m-d');
-            if($update==$now||$created==$now){
-                array_push($promocionesT,$promocionn);
+
+    public function globales()
+    {
+        $promocionesT = [];
+        $promociones = Promociones::where('disponible', 1)->get();
+        foreach ($promociones as $promocion) {
+            $negocio = $promocion->negocios;
+            $promocionn = ["promocion" => $promocion, "negocio" => $negocio];
+            $now = Carbon::now()->format('Y-m-d');
+            $created = Carbon::make($promocion->created_at)->format('Y-m-d');
+            $update = Carbon::make($promocion->updated_at)->format('Y-m-d');
+            if ($update == $now || $created == $now) {
+                array_push($promocionesT, $promocionn);
             }
         }
         return json_encode($promocionesT);
