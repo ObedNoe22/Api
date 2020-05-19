@@ -29,25 +29,27 @@ class UsuariosController extends Controller
         if ($validator->fails()) {
             return response()->json(["estado" => false, "detalle" => $validator->errors()->all()]);
         }
-        $credenciales = $request->only('nombre', 'password');
-        try {
-            if (!$token = JWTAuth::attempt($credenciales)) {
-                return response()->json(["estado" => false, 'detalle' => ['Login incorrecto: credenciales erróneas.']]);
-            }
-        } catch (JWTException $e) {
-            return response()->json(["estado" => false, 'detalle' => ['Login incorrecto: Error en el server.']]);
-        }
         $usuario = Usuario::where('nombre', $request->input('nombre'))->first();
-        $rolId = $usuario->rolId;
-        if($rolId==1){
-            $vendedor = Vendedor::where('usuarioId', $usuario->id)->first();
-            $nombre=$vendedor->nombre." ".$vendedor->apellidos;
-            $id=$vendedor->usuarioId;
-            return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'),'id'=>$id, 'vendedor' => $nombre, 'rol' => $rolId]);
+        if($usuario){
+            if (Hash::check($request->password, $usuario->password)) {
+                $token = JWTAuth::fromUser($usuario);
+                $rolId = $usuario->rolId;
+                if($rolId==1){
+                    $vendedor = Vendedor::where('usuarioId', $usuario->id)->first();
+                    $nombre=$vendedor->nombre." ".$vendedor->apellidos;
+                    $id=$vendedor->usuarioId;
+                    return response()->json(["estado" => true, "detalle" => $token, 'user' => $request->input('nombre'),'id'=>$id, 'vendedor' => $nombre, 'rol' => $rolId]);
+                }
+                else{
+                    return response()->json(["estado" => true, "detalle" => $token, 'rol' => $rolId,"estadoC"=>$usuario->estado,"id"=>$usuario->id]);
+                }
+            }else{
+                return response()->json(["estado"=>false,"detalle"=>["Datos invalidos"]]);
+            }
+        }else{
+            return response()->json(["estado"=>false,"detalle"=>["Datos invalidos"]]);
         }
-        else{
-            return response()->json(["estado" => true, "detalle" => $token, 'rol' => $rolId,"estadoC"=>$usuario->estado,"id"=>$usuario->id]);
-        }
+
     }
 
     //Agregar usuario

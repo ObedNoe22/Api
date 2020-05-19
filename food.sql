@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-03-2019 a las 21:40:02
--- Versión del servidor: 10.1.31-MariaDB
--- Versión de PHP: 7.2.4
+-- Tiempo de generación: 19-05-2020 a las 20:54:58
+-- Versión del servidor: 10.3.16-MariaDB
+-- Versión de PHP: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,8 +19,31 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `foodlyxapi`
+-- Base de datos: `food`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comentario_negocio`
+--
+
+CREATE TABLE `comentario_negocio` (
+  `id` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_negocio` int(11) NOT NULL,
+  `puntuacion` int(11) NOT NULL,
+  `comentario` text NOT NULL,
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `comentario_negocio`
+--
+
+INSERT INTO `comentario_negocio` (`id`, `id_usuario`, `id_negocio`, `puntuacion`, `comentario`, `updated_at`, `created_at`) VALUES
+(1, 54, 13, 3, 'Super Recomendado', '2020-05-19 18:41:49', '2020-05-19 18:41:49');
 
 -- --------------------------------------------------------
 
@@ -82,7 +105,7 @@ CREATE TABLE `menu` (
 
 INSERT INTO `menu` (`id`, `negocio_id`, `producto_id`, `created_at`, `updated_at`) VALUES
 (2, 2, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 2, 2, '2018-11-18 04:03:31', '2018-11-18 04:03:31'),
+(3, 13, 2, '2018-11-18 04:03:31', '2018-11-18 04:03:31'),
 (4, 4, 3, '2018-11-18 04:04:00', '2018-11-18 04:04:00');
 
 -- --------------------------------------------------------
@@ -134,7 +157,7 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `costo`, `disponible`, `negocio_id`, `created_at`, `updated_at`) VALUES
-(3, 'Si cxdxd', 3000, 0, 13, '0000-00-00 00:00:00', '2018-12-12 04:23:29'),
+(3, 'Si cxdxd', 3000, 1, 13, '0000-00-00 00:00:00', '2018-12-12 04:23:29'),
 (4, 'Productoaadsdsa', 4000, 1, 13, '2018-11-30 03:52:34', '2019-01-05 20:44:46'),
 (5, 'aaaa', 200, 1, 13, '2018-12-12 20:55:30', '2018-12-12 20:55:30');
 
@@ -159,9 +182,9 @@ CREATE TABLE `promociones` (
 
 INSERT INTO `promociones` (`id`, `negocio_id`, `descripcion`, `disponible`, `created_at`, `updated_at`) VALUES
 (2, 2, 'Cambio', 0, '0000-00-00 00:00:00', '2018-11-19 19:48:43'),
-(3, 3, 'prueba2', 0, '2018-11-18 04:08:13', '2018-11-18 04:08:13'),
-(4, 4, 'prueba3', 0, '2018-11-18 04:08:30', '2018-11-18 04:08:30'),
-(6, 13, 'Prueba55j', 0, '2018-11-29 00:07:47', '2018-12-12 04:23:49');
+(3, 3, 'prueba2', 1, '2018-11-18 04:08:13', '2018-11-18 04:08:13'),
+(4, 4, 'prueba3', 1, '2018-11-18 04:08:30', '2018-11-18 04:08:30'),
+(6, 13, 'Prueba55j', 1, '2020-05-19 00:07:47', '2018-12-12 04:23:49');
 
 -- --------------------------------------------------------
 
@@ -252,6 +275,12 @@ INSERT INTO `vendedor` (`id`, `usuarioId`, `nombre`, `apellidos`, `created_at`, 
 --
 
 --
+-- Indices de la tabla `comentario_negocio`
+--
+ALTER TABLE `comentario_negocio`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `cupones_anuales`
 --
 ALTER TABLE `cupones_anuales`
@@ -309,6 +338,12 @@ ALTER TABLE `vendedor`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `comentario_negocio`
+--
+ALTER TABLE `comentario_negocio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `cupones_anuales`
